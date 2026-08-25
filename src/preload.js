@@ -10,8 +10,23 @@ const PAGE_PATCH = `
   window.focus = () => { requestShow(); };
   const OriginalNotification = window.Notification;
   if (!OriginalNotification) return;
+  const activeNotifications = new Set();
+  const dismissNotifications = () => {
+    activeNotifications.forEach((notification) => {
+      try {
+        notification.close();
+      } catch {}
+    });
+  };
+  window.addEventListener('focus', dismissNotifications);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) dismissNotifications();
+  });
   function PatchedNotification(title, options) {
     const notification = new OriginalNotification(title, options);
+    activeNotifications.add(notification);
+    notification.addEventListener('close', () => activeNotifications.delete(notification));
+    notification.addEventListener('error', () => activeNotifications.delete(notification));
     notification.addEventListener('click', requestShow);
     return notification;
   }
