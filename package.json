@@ -1,0 +1,55 @@
+{
+  "name": "whatsapp-linux",
+  "version": "0.1.0",
+  "description": "WhatsApp Web wrapper for Linux desktops",
+  "main": "src/main.js",
+  "license": "MIT",
+  "author": "done6666 <done6666@users.noreply.github.com>",
+  "desktopName": "whatsapp-linux.desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/done6666/whatsapp-linux.git"
+  },
+  "homepage": "https://github.com/done6666/whatsapp-linux#readme",
+  "bugs": "https://github.com/done6666/whatsapp-linux/issues",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --linux deb rpm AppImage flatpak",
+    "dist:deb": "electron-builder --linux deb",
+    "dist:rpm": "electron-builder --linux rpm",
+    "dist:appimage": "electron-builder --linux AppImage",
+    "dist:flatpak": "electron-builder --linux flatpak",
+    "dist:arm64": "electron-builder --linux deb rpm AppImage flatpak --arm64"
+  },
+  "build": {
+    "appId": "com.github.done6666.whatsapp-linux",
+    "productName": "WhatsApp Linux",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "build/icon.png"
+    ],
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "AppImage",
+        "flatpak"
+      ],
+      "category": "Network;InstantMessaging",
+      "icon": "build/icon.png",
+      "syncDesktopName": true,
+      "artifactName": "${name}-${version}-${arch}.${ext}",
+      "publish": {
+        "provider": "github"
+      }
+    }
+  },
+  "devDependencies": {
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3"
+  }
+}

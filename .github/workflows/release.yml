@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install flatpak tooling
+        run: sudo apt-get update && sudo apt-get install -y flatpak
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build x64 packages
+        run: npx electron-builder --linux deb rpm AppImage flatpak --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build arm64 packages
+        run: npx electron-builder --linux deb rpm AppImage flatpak --arm64 --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
