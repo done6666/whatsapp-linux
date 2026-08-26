@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-linux",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "WhatsApp Web wrapper for Linux desktops",
   "main": "src/main.js",
   "license": "MIT",
